@@ -93,9 +93,9 @@ const runGenerateData = async (args) => {
 
   try {
     await fs.writeFile(FILE_NAME, content);
-    console.error(chalk.red(`Can't write data to file...`));
-  } catch (err) {
     console.info(chalk.green(`Operation success. File created.`));
+  } catch (err) {
+    console.error(chalk.red(`Can't write data to file...`));
   }
 
   return null;
