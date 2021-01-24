@@ -1,6 +1,7 @@
 'use strict';
 
-const fs = require(`fs`);
+const fs = require(`fs`).promises;
+const chalk = require(`chalk`);
 
 const {
   getRandomInt,
@@ -80,23 +81,24 @@ const generateOffers = (count) => {
   }));
 };
 
-const runGenerateData = (args) => {
+const runGenerateData = async (args) => {
   const [count] = args;
   const countData = Number.parseInt(count, 10) || DEFAULT_COUNT;
 
   if (countData > MAX_COUNT) {
-    return console.error(`Не больше 1000 объявлений`);
+    return console.error(chalk.red(`Не больше 1000 объявлений`));
   }
 
   const content = JSON.stringify(generateOffers(countData));
 
-  return fs.writeFile(FILE_NAME, content, (err) => {
-    if (err) {
-      return console.error(`Can't write data to file...`);
-    }
+  try {
+    await fs.writeFile(FILE_NAME, content);
+    console.error(chalk.red(`Can't write data to file...`));
+  } catch (err) {
+    console.info(chalk.green(`Operation success. File created.`));
+  }
 
-    return console.info(`Operation success. File created.`);
-  });
+  return null;
 };
 
 module.exports = {
