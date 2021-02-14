@@ -8,7 +8,7 @@ const {
 } = require(`../../constants`);
 
 const DEFAULT_PORT = 3000;
-const FILENAME = `mocksss.json`;
+const FILENAME = `mocks.json`;
 
 const runServer = (args) => {
   const [customPort] = args;
