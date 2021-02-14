@@ -8,7 +8,7 @@ const {
 } = require(`../../constants`);
 
 const DEFAULT_PORT = 3000;
-const FILENAME = `mocks.json`;
+const FILENAME = `mocksss.json`;
 
 const runServer = (args) => {
   const [customPort] = args;
@@ -20,10 +20,20 @@ const runServer = (args) => {
   app.get(`/offers`, async (req, res) => {
     try {
       const fileContent = await fs.readFile(FILENAME);
+
+      if (fileContent.length === 0) {
+        return res.json([]);
+      }
+
       const mocks = JSON.parse(fileContent);
-      res.json(mocks);
+
+      return res.json(mocks);
     } catch (err) {
-      res.status(HttpCode.INTERNAL_SERVER_ERROR).send(err);
+      if (err.code === `ENOENT`) {
+        return res.status(HttpCode.NOT_FOUND).json([]);
+      }
+
+      return res.status(HttpCode.INTERNAL_SERVER_ERROR).send(err);
     }
   });
 
