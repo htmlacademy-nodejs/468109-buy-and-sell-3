@@ -14,3 +14,13 @@ module.exports.shuffle = (someArray) => {
 
   return someArray;
 };
+
+module.exports.checkTextMatch = (search, text) => {
+  if (!search || !text) {
+    return false;
+  }
+
+  const reg = new RegExp(search.trim(), `gi`);
+
+  return reg.test(text);
+};
