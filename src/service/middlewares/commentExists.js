@@ -1,6 +1,6 @@
 'use strict';
 
-const {HttpCode} = require(`../../constants`);
+const {StatusCodes} = require(`http-status-codes`);
 
 module.exports = (service) => (req, res, next) => {
   const {commentId} = req.params;
@@ -8,7 +8,7 @@ module.exports = (service) => (req, res, next) => {
   const comment = service.findOneComment(offer, commentId);
 
   if (!comment) {
-    return res.status(HttpCode.NOT_FOUND)
+    return res.status(StatusCodes.NOT_FOUND)
       .send(`Comment with ${commentId} not found`);
   }
 

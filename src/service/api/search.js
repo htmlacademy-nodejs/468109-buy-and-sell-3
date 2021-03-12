@@ -1,7 +1,7 @@
 'use strict';
 
 const {Router} = require(`express`);
-const {HttpCode} = require(`../../constants`);
+const {StatusCodes} = require(`http-status-codes`);
 
 const route = new Router();
 
@@ -12,7 +12,7 @@ module.exports = (app, service) => {
     const {query} = req.query;
 
     const results = service.findAll(query);
-    res.status(HttpCode.OK)
+    res.status(StatusCodes.OK)
       .json(results);
   });
 };

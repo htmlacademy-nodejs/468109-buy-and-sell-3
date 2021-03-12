@@ -1,10 +1,7 @@
 'use strict';
 
 const express = require(`express`);
-
-const {
-  HttpCode
-} = require(`../../constants`);
+const {StatusCodes, ReasonPhrases} = require(`http-status-codes`);
 
 const api = require(`../api`);
 
@@ -20,8 +17,8 @@ const runServer = (args) => {
   app.use(`/api`, api);
 
   app.use((req, res) => res
-    .status(HttpCode.NOT_FOUND)
-    .send(`Not found`));
+    .status(StatusCodes.NOT_FOUND)
+    .send(ReasonPhrases.NOT_FOUND));
 
   app.listen(port);
 };

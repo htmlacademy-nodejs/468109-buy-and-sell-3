@@ -1,7 +1,8 @@
 'use strict';
 
 const {Router} = require(`express`);
-const {HttpCode} = require(`../../constants`);
+const {StatusCodes} = require(`http-status-codes`);
+
 const offerValidator = require(`../middlewares/offerValidator`);
 const commentValidator = require(`../middlewares/commentValidator`);
 const offerExist = require(`../middlewares/offerExist`);
@@ -15,21 +16,21 @@ module.exports = (app, service) => {
   route.get(`/`, (req, res) => {
     const offers = service.findAll();
 
-    return res.status(HttpCode.OK)
+    return res.status(StatusCodes.OK)
       .json(offers);
   });
 
   route.post(`/`, offerValidator, (req, res) => {
     const offer = service.create(req.body);
 
-    return res.status(HttpCode.CREATED)
+    return res.status(StatusCodes.CREATED)
       .json(offer);
   });
 
   route.get(`/:offerId`, offerExist(service), (req, res) => {
     const {offer} = res.locals;
 
-    return res.status(HttpCode.OK)
+    return res.status(StatusCodes.OK)
       .json(offer);
   });
 
@@ -38,7 +39,7 @@ module.exports = (app, service) => {
 
     const newOffer = service.update(offerId, req.body);
 
-    return res.status(HttpCode.OK)
+    return res.status(StatusCodes.OK)
       .json(newOffer);
   });
 
@@ -47,7 +48,7 @@ module.exports = (app, service) => {
 
     const deletedOffer = service.drop(offerId);
 
-    return res.status(HttpCode.OK)
+    return res.status(StatusCodes.OK)
       .json(deletedOffer);
   });
 
@@ -56,7 +57,7 @@ module.exports = (app, service) => {
 
     const comments = service.findAllComments(offer);
 
-    return res.status(HttpCode.OK)
+    return res.status(StatusCodes.OK)
       .json(comments);
   });
 
@@ -65,7 +66,7 @@ module.exports = (app, service) => {
 
     const newComment = service.createComment(offer, req.body);
 
-    return res.status(HttpCode.OK)
+    return res.status(StatusCodes.CREATED)
       .json(newComment);
   });
 
@@ -75,7 +76,7 @@ module.exports = (app, service) => {
 
     const deletedComment = service.dropComment(offer, commentId);
 
-    return res.status(HttpCode.OK)
+    return res.status(StatusCodes.OK)
       .json(deletedComment);
   });
 };
