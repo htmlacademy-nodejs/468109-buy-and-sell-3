@@ -8,9 +8,9 @@ const commentValidator = require(`../middlewares/commentValidator`);
 const offerExist = require(`../middlewares/offerExist`);
 const commentExist = require(`../middlewares/commentExists`);
 
-const route = new Router();
-
 module.exports = (app, service) => {
+  const route = new Router();
+
   app.use(`/offers`, route);
 
   route.get(`/`, (req, res) => {

@@ -2,7 +2,11 @@ parserOptions:
     ecmaVersion: 2018
 
 env:
+    jest: true
     es6: true
     node: true
+
+ignorePatterns:
+    '**/express/public/**/*.js'
 
 extends: 'htmlacademy/node'
