@@ -3,14 +3,14 @@
 const {Router} = require(`express`);
 const {StatusCodes} = require(`http-status-codes`);
 
-const offerValidator = require(`../middlewares/offerValidator`);
-const commentValidator = require(`../middlewares/commentValidator`);
+const {offerKeys, commentKeys, entityNames} = require(`../constants/entities`);
+const entityValidator = require(`../middlewares/entityValidator`);
 const offerExist = require(`../middlewares/offerExist`);
 const commentExist = require(`../middlewares/commentExists`);
 
-const route = new Router();
-
 module.exports = (app, service) => {
+  const route = new Router();
+
   app.use(`/offers`, route);
 
   route.get(`/`, (req, res) => {
@@ -20,7 +20,7 @@ module.exports = (app, service) => {
       .json(offers);
   });
 
-  route.post(`/`, offerValidator, (req, res) => {
+  route.post(`/`, entityValidator(offerKeys, entityNames.OFFER), (req, res) => {
     const offer = service.create(req.body);
 
     return res.status(StatusCodes.CREATED)
@@ -34,7 +34,7 @@ module.exports = (app, service) => {
       .json(offer);
   });
 
-  route.put(`/:offerId`, [offerExist(service), offerValidator], (req, res) => {
+  route.put(`/:offerId`, [offerExist(service), entityValidator(offerKeys, entityNames.OFFER)], (req, res) => {
     const {offerId} = req.params;
 
     const newOffer = service.update(offerId, req.body);
@@ -61,7 +61,7 @@ module.exports = (app, service) => {
       .json(comments);
   });
 
-  route.post(`/:offerId/comments/`, [offerExist(service), commentValidator], (req, res) => {
+  route.post(`/:offerId/comments/`, [offerExist(service), entityValidator(commentKeys, entityNames.COMMENT)], (req, res) => {
     const {offer} = res.locals;
 
     const newComment = service.createComment(offer, req.body);
@@ -70,7 +70,7 @@ module.exports = (app, service) => {
       .json(newComment);
   });
 
-  route.delete(`/:offerId/comments/:commentId`, [offerExist(service), commentExist(service), commentValidator], (req, res) => {
+  route.delete(`/:offerId/comments/:commentId`, [offerExist(service), commentExist(service), entityValidator(commentKeys, entityNames.COMMENT)], (req, res) => {
     const {offer} = res.locals;
     const {commentId} = req.params;
 
