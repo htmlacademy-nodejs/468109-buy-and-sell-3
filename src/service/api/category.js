@@ -6,7 +6,7 @@ const {StatusCodes} = require(`http-status-codes`);
 module.exports = (app, service) => {
   const route = new Router();
 
-  app.use(`/category`, route);
+  app.use(`/categories`, route);
 
   route.get(`/`, (req, res) => {
     const categories = service.findAll();
