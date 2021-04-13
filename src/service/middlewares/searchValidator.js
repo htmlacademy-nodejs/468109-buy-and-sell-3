@@ -2,13 +2,11 @@
 
 const {StatusCodes, ReasonPhrases} = require(`http-status-codes`);
 
-const offerKeys = [`text`];
+const searchKeys = [`query`];
 
 module.exports = (req, res, next) => {
-  const {comment} = res.locals;
-  const newComment = comment ? Object.assign(comment, req.body) : req.body;
-  const keys = Object.keys(newComment);
-  const keysExists = offerKeys.every((key) => keys.includes(key));
+  const keys = Object.keys(req.query);
+  const keysExists = searchKeys.every((key) => keys.includes(key));
 
   if (!keysExists) {
     res.status(StatusCodes.BAD_REQUEST)
