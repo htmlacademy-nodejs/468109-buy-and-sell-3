@@ -2,8 +2,24 @@
 
 const {Router} = require(`express`);
 
-const searchRouter = new Router();
+const {getAPI} = require(`../api`);
 
-searchRouter.get(`/`, (req, res) => res.render(`search-result`));
+const searchRouter = new Router();
+const api = getAPI();
+
+searchRouter.get(`/`, async (req, res) => {
+  try {
+    const {search} = req.query;
+    const results = await api.search(search);
+
+    res.render(`search-result`, {
+      results
+    });
+  } catch (error) {
+    res.render(`search-result`, {
+      results: []
+    });
+  }
+});
 
 module.exports = searchRouter;
